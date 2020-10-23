@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 2.8)
+project (boost)
+
+if(NOT EXISTS ./ext)
+	IF (WIN32)
+	    set(SLASH \\)
+	    set(SH_EXT bat)
+	ELSE()
+	    set(SLASH /)
+	    set(SH_EXT sh)
+	ENDIF()
+
+	execute_process(COMMAND git clone git://git.openssl.org/openssl.git ./ext)
+	execute_process(COMMAND git submodule update --init --recursive WORKING_DIRECTORY ./ext)
+
+	IF (WIN32)
+		execute_process( COMMAND perl Configure VC-WIN64A WORKING_DIRECTORY ./ext )
+		execute_process( COMMAND nmake WORKING_DIRECTORY ./ext )
+	ELSE()
+		execute_process( COMMAND ./Configure WORKING_DIRECTORY ./ext )
+		execute_process( COMMAND make WORKING_DIRECTORY ./ext )
+	ENDIF()
+endif()
