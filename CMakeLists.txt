@@ -13,7 +13,7 @@ ELSE()
 	execute_process( COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ext )
 ENDIF()
 
-execute_process(COMMAND mv 
+execute_process(COMMAND cp 
 	${CMAKE_CURRENT_SOURCE_DIR}/ext/libcrypto.a
 	${CMAKE_CURRENT_SOURCE_DIR}/ext/libcrypto.so
 	${CMAKE_CURRENT_SOURCE_DIR}/ext/libcrypto.so.3
