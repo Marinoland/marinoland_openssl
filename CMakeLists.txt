@@ -2,21 +2,6 @@ cmake_minimum_required(VERSION 2.8)
 project (openssl)
 
 if(NOT EXISTS ./ext)
-	IF (WIN32)
-	    set(SLASH \\)
-	    set(SH_EXT bat)
-	    set(LIBPREFIX lib)
-	ELSE()
-	    set(SLASH /)
-	    set(SH_EXT sh)
-	    set(LIBPREFIX )
-	ENDIF()
-
-
-	file(WRITE depend.includedirs ${CMAKE_CURRENT_SOURCE_DIR}/ext/include)
-	file(WRITE depend.linkdirs ${CMAKE_CURRENT_SOURCE_DIR}/ext)
-	file(WRITE depend.libs ${LIBPREFIX}ssl\n${LIBPREFIX}crypto)
-
 	execute_process(COMMAND git clone git://git.openssl.org/openssl.git ./ext)
 	execute_process(COMMAND git submodule update --init --recursive WORKING_DIRECTORY ./ext)
 
