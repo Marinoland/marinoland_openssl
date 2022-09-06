@@ -13,6 +13,7 @@ ELSE()
 	execute_process( COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ext )
 ENDIF()
 
+execute_process(COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/ext/openssl)
 execute_process(COMMAND mv 
 	${CMAKE_CURRENT_SOURCE_DIR}/ext/libcrypto.a
 	${CMAKE_CURRENT_SOURCE_DIR}/ext/libcrypto.so
