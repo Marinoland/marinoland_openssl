@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-project (boost)
+project (openssl)
 
 if(NOT EXISTS ./ext)
 	IF (WIN32)
