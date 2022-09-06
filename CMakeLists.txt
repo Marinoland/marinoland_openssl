@@ -4,7 +4,7 @@ project (openssl)
 execute_process(COMMAND git submodule init)
 execute_process(COMMAND git submodule update)
 
-set(OPENSSL_BIN_DIR ${CMAKE_CURRENT_BINARY_DIR}/ext/openssl)
+set(OPENSSL_BIN_DIR ${CMAKE_CURRENT_BINARY_DIR}/openssl)
 IF (WIN32)
 	execute_process( COMMAND perl Configure VC-WIN64A WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ext )
 	execute_process( COMMAND nmake WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ext )
@@ -13,7 +13,6 @@ ELSE()
 	execute_process( COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ext )
 ENDIF()
 
-execute_process(COMMAND mkdir -p ${CMAKE_CURRENT_BINARY_DIR}/ext/openssl)
 execute_process(COMMAND mv 
 	${CMAKE_CURRENT_SOURCE_DIR}/ext/libcrypto.a
 	${CMAKE_CURRENT_SOURCE_DIR}/ext/libcrypto.so
