@@ -1,15 +1,23 @@
 cmake_minimum_required(VERSION 2.8)
 project (openssl)
 
-if(NOT EXISTS ./ext)
-	execute_process(COMMAND git clone git://git.openssl.org/openssl.git ./ext)
-	execute_process(COMMAND git submodule update --init --recursive WORKING_DIRECTORY ./ext)
+execute_process(COMMAND git submodule init)
+execute_process(COMMAND git submodule update)
 
-	IF (WIN32)
-		execute_process( COMMAND perl Configure VC-WIN64A WORKING_DIRECTORY ./ext )
-		execute_process( COMMAND nmake WORKING_DIRECTORY ./ext )
-	ELSE()
-		execute_process( COMMAND ./Configure WORKING_DIRECTORY ./ext )
-		execute_process( COMMAND make WORKING_DIRECTORY ./ext )
-	ENDIF()
-endif()
+set(OPENSSL_BIN_DIR ${CMAKE_CURRENT_BINARY_DIR}/ext/openssl)
+IF (WIN32)
+	execute_process( COMMAND perl Configure VC-WIN64A WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ext )
+	execute_process( COMMAND nmake WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ext )
+ELSE()
+	execute_process( COMMAND ./Configure WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ext )
+	execute_process( COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ext )
+ENDIF()
+
+execute_process(COMMAND mv 
+	${CMAKE_CURRENT_SOURCE_DIR}/ext/libcrypto.a
+	${CMAKE_CURRENT_SOURCE_DIR}/ext/libcrypto.so
+	${CMAKE_CURRENT_SOURCE_DIR}/ext/libcrypto.so.3
+	${CMAKE_CURRENT_SOURCE_DIR}/ext/libssl.a
+	${CMAKE_CURRENT_SOURCE_DIR}/ext/libssl.so
+	${CMAKE_CURRENT_SOURCE_DIR}/ext/libssl.so.3
+	${OPENSSL_BIN_DIR})
