@@ -4,20 +4,25 @@ project (openssl)
 execute_process(COMMAND git submodule init)
 execute_process(COMMAND git submodule update)
 
-set(OPENSSL_BIN_DIR ${CMAKE_CURRENT_BINARY_DIR})
+set(VER 3)
 IF (WIN32)
-	execute_process( COMMAND perl Configure VC-WIN64A WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ext )
-	execute_process( COMMAND nmake WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ext )
+	set(MAKE nmake)
+	set(CONFIGURE perl Configure)
+	set(STATIC_SUFFIX _static.lib)
+	set(DYN_SUFFIX -${VER}-x64.dll)
 ELSE()
-	execute_process( COMMAND ./Configure WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ext )
-	execute_process( COMMAND make WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ext )
+	set(MAKE make)
+	set(CONFIGURE ./Configure)
+	set(STATIC_SUFFIX .a)
+	set(DYN_SUFFIX .so.${VER})
 ENDIF()
 
-execute_process(COMMAND cp 
-	${CMAKE_CURRENT_SOURCE_DIR}/ext/libcrypto.a
-	${CMAKE_CURRENT_SOURCE_DIR}/ext/libcrypto.so
-	${CMAKE_CURRENT_SOURCE_DIR}/ext/libcrypto.so.3
-	${CMAKE_CURRENT_SOURCE_DIR}/ext/libssl.a
-	${CMAKE_CURRENT_SOURCE_DIR}/ext/libssl.so
-	${CMAKE_CURRENT_SOURCE_DIR}/ext/libssl.so.3
-	${OPENSSL_BIN_DIR})
+execute_process(COMMAND ${CONFIGURE} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ext )
+execute_process(COMMAND ${MAKE} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/ext )
+
+file(COPY
+	${CMAKE_CURRENT_SOURCE_DIR}/ext/libcrypto${STATIC_SUFFIX}
+	${CMAKE_CURRENT_SOURCE_DIR}/ext/libcrypto${DYN_SUFFIX}
+	${CMAKE_CURRENT_SOURCE_DIR}/ext/libssl${STATIC_SUFFIX}
+	${CMAKE_CURRENT_SOURCE_DIR}/ext/libssl${DYN_SUFFIX}
+	DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
