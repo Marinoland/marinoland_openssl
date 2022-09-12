@@ -15,7 +15,7 @@ ELSE()
 	set(DYN_SUFFIX .so.${VER})
 ENDIF()
 
-if(NOT EXISTS ${CMAKE_BINARY_DIR}/libssl${STATIC_SUFFIX})
+if(NOT EXISTS ${CMAKE_BINARY_DIR}/ext/openssl/libssl${STATIC_SUFFIX})
 
 	execute_process(COMMAND git submodule init)
 	execute_process(COMMAND git submodule update)
