@@ -15,7 +15,7 @@ ELSE()
 	set(DYN_SUFFIX .so.${VER})
 ENDIF()
 
-if(NOT EXISTS ${PROJECT_BINARY_DIR}/libssl${STATIC_SUFFIX})
+if(NOT EXISTS ${CMAKE_BINARY_DIR}/libssl${STATIC_SUFFIX})
 
 	execute_process(COMMAND git submodule init)
 	execute_process(COMMAND git submodule update)
@@ -28,6 +28,6 @@ if(NOT EXISTS ${PROJECT_BINARY_DIR}/libssl${STATIC_SUFFIX})
 		${CMAKE_CURRENT_SOURCE_DIR}/ext/libcrypto${DYN_SUFFIX}
 		${CMAKE_CURRENT_SOURCE_DIR}/ext/libssl${STATIC_SUFFIX}
 		${CMAKE_CURRENT_SOURCE_DIR}/ext/libssl${DYN_SUFFIX}
-		DESTINATION ${PROJECT_BINARY_DIR})
+		DESTINATION ${CMAKE_BINARY_DIR})
 
 endif()
